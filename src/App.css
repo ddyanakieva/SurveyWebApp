@@ -1,0 +1,304 @@
+:root {
+  --purple: #767696;
+  --purple2: #64638F;
+  --orange: #f19b39;
+  --light-orange: #E4D8AE;
+  --light-green: #b7c999;
+  --light-blue: #AFBDCC;
+  --blue: #7391b1;
+  --dark-blue: #33577a;
+  --background: #6FA094;
+  --text-color: #323235;
+  --font: 'Jost', sans-serif;
+  --light-grey: #EAE9E4;
+  --grey: #cecece;
+  --black: rgb(31, 31, 41);
+  --min-weight: 900px;
+}
+
+body{
+  background-color:var(--light-blue);
+  margin: 0;
+}
+
+button{
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font);
+  color: white;
+}
+
+button .disabled{
+  background-color: var(--light-grey);
+  color: var(--black);
+  cursor: default;
+}
+
+p{
+  font-family: var(--font);
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  font-size: 1.1em;
+  color: var(--black);
+}
+
+p i{
+  color: var(--blue);
+  margin-right: 10px;
+}
+
+a{
+  color: var(--dark-blue);
+  font-weight: bold;
+}
+
+label{
+  cursor: pointer;
+  font-family: var(--font);
+  color: var(--black);
+  font-size: 1.1em;
+  line-height: 1.3;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+input[type=radio], input[type=checkbox]{
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+}
+
+textarea {
+  width: 100%;
+  padding: 9px;
+  border-radius: 4px;
+  resize:vertical;
+  min-height: 100px;
+  font-family: var(--font);
+  font-size: 1em;
+  color:#46464D;
+}
+
+textarea:focus{
+  outline: none;
+}
+
+hr {
+  border-top: 2px solid var(--dark-blue);
+  border-radius: 10px;
+}
+
+.outer-container{
+  min-width: var(--min-weight);
+  position: relative;
+  padding-top: 40px;
+}
+
+#top-side{
+  /* background-color: whitesmoke; */
+  background-color: rgb(36, 36, 46);
+
+  height: 240px;
+  width: 100%;
+  z-index: 0;
+  position: absolute;
+  top: 0;
+}
+
+#container{
+  width: var(--min-weight);
+  min-height: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+#title{
+  margin-bottom: 30px;
+}
+
+#title :hover{
+ cursor: default;
+}
+
+#title p{
+  text-align: center;
+  font-size: 1.7em;
+}
+
+#title p:first-child{
+  font-weight: 800;
+}
+
+/* FORM PANEL & OTHER */
+#form-panel{
+  width: var(--min-weight);
+
+  border: 1px solid var(--blue);
+  border-radius: 15px;
+  background: white;
+
+  padding-bottom: 40px;
+}
+
+.progress-section{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  padding: 25px;
+}
+
+.progress-section p{
+  font-size: 1.3em;
+}
+
+.submit-button{
+  background-color: var(--dark-blue);
+  font-size: 1.2em;
+  border-radius: 8px;
+  width: 160px;
+  height: 50px;
+  transition: 0.1s;
+  font-weight: bold;
+}
+
+.submit-button:not(.disabled):hover{
+  background-color: var(--black);
+}
+
+.button-wrapper{
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+.info-button{
+  mix-blend-mode:difference;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background-color: transparent;
+  border-radius: 100px;
+  border: 4px white solid;
+  width: 6vh;
+  height: 6vh;
+  font-size: 1.2em;
+  transition: 0.2s;
+}
+
+.info-button:hover{
+  color: var(--text-color);
+  border-color: var(--text-color);
+}
+.question{
+  width: 380px;
+  margin: 0 auto;  
+  padding-bottom:  15px;
+}
+
+.question.NewSection{
+  font-weight: bold;
+  padding-bottom: 0
+}
+
+.question p{
+  font-size: 1.2em;
+  margin: 15px 0;
+}
+
+.answer-wrapper{
+  background-color: var(--light-grey);
+  margin-bottom: 8px;
+  padding: 5px;
+  border-radius: 10px;
+  transition: 0.1s;
+  display: flex;
+}
+
+.answer-wrapper:hover{
+  cursor: pointer;
+  background-color: var(--grey);
+}
+.consent{
+  width: fit-content;
+  width: -moz-fit-content;
+}
+.answer-clicked{
+  background-color: var(--light-blue);
+}
+.answer-clicked:hover{
+  background-color: var(--light-blue);
+}
+
+.form-body{
+  width: 90%;
+  margin: 0 auto;  
+  padding-bottom:  15px;
+}
+
+.people-info{
+  display: flex;
+  justify-content: space-between;
+}
+
+.people-info p{
+  color: var(--dark-blue);
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.highlighted{
+  color: var(--dark-blue);
+  font-weight: bold;
+  font-size: 1.1em;
+  margin: 5px 0;
+}
+
+.sub-section{
+  margin: 20px 0;
+}
+
+.bold-text{
+  color: var(--black);
+  font-weight: bold;
+}
+
+/* The alert message box */
+.alert{
+  padding: 20px;
+  background-color: var(--orange);
+  color: white;
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+}
+
+.alert p{
+  font-size: 1.1em;
+  color: white;
+}
+
+/* The close button */
+.closebtn {
+  margin-right: 70px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+.sub-section-title {
+  color: var(--dark-blue);
+}
