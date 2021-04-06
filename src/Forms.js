@@ -7,9 +7,8 @@ class Forms extends Component {
     super();
     let link = <a href="https://www.abdn.ac.uk/about/privacy/research-participants-938.php" target="_blank" rel="noreferrer">here</a>
 
-    this.italics = ['<i>fully anonymised</i>', '<i>I do not click refresh or the back button</i>']
-    
     this.projectTitle = "Serious games for phishing susceptibility and awareness research"
+    this.bold = '<strong>hi</strong>'
 
     this.participationSection = [
       {
@@ -35,6 +34,19 @@ class Forms extends Component {
       },      
     ]
 
+    this.introductionSection = [
+      {
+        dangerText: `In the first highlighted section of the screenshot below you can see at the top your <span class="highlighted">Score Points</span> and right below it the <span class="highlighted">Time Remaining</span>. In the second highlighted section of the screenshot below you can see the attachments as well as the two buttons. Use the buttons to classify each email, progress to the next email, reset the timer and earn points. Use the <span class="highlighted">Report button</span> when an email appears <b>phishing</b> and use the <span class="highlighted">Accept button</span> when an email appear <b>genuine</b>.`,
+        image: "screenshot2.png",
+        divider: 1,
+      },
+      {
+        dangerText: "The screenshot below shows information on how cues are displayed. You can recognize which text objects are selectable by placing your mouse over them. Hovering over cues gives the text an <b>orange</b> background and selecting a cue turns the background <b>blue</b> as shown in the screenshot. If there is a link URL present in the email you can see the real address pop up above it.",
+        image: "screenshot1.png",
+        divider: 1
+      }
+    ]
+
     this.consent = [
       {
         text: `I confirm that the research project “${this.projectTitle}” has been explained to me. I have had the opportunity to ask questions about the project and have had these answered satisfactorily.`,
@@ -57,12 +69,12 @@ class Forms extends Component {
     ]
   }
   
-  createFormOfType(type){
+  createFormOfType(){
     let form = []
 
     if (this.props.type === "participation"){
       form.push(
-        <div className="form-body">
+        <div>
             <div className="people-info" style={{marginBottom:"5px"}}>
               <p>PRINCIPAL INVESTIGATOR <br/>SUPERVISOR</p>
               <p>Denitsa Yanakieva <br/>JP Vargheese</p>
@@ -94,9 +106,19 @@ class Forms extends Component {
           </div>
         )
       }
+      else if (this.props.type === "intoduction"){
+        this.introductionSection.map((element,i) => 
+          form.push(
+          <div key={"introduct-"+i}>
+              {element.divider === 1? <hr className="solid"></hr> : null}
+              {element.dangerText ? <p dangerouslySetInnerHTML={{ __html: element.dangerText }}></p>: <p>{element.text}</p> }  
+              {element.image ? <img src={process.env.PUBLIC_URL + '/'+element.image} alt="SupportingImage"/>: null}
+          </div>)
+        );
+      }
       else if (this.props.type === "consent"){
         form.push(
-          <div className="form-body">
+          <div>
             <p className="highlighted">
             Consent form for participation in the research project: <br/>“{this.projectTitle}”. 
             </p>
@@ -138,7 +160,9 @@ class Forms extends Component {
   render() {  
     let formType = this.getFormTextFromType(this.props.type);
     return(
-      this.createFormOfType(formType)
+      <div className="form-body">
+        {this.createFormOfType()}
+      </div>
     );
   }
 

@@ -54,6 +54,13 @@ a{
   font-weight: bold;
 }
 
+img{
+  display: block;
+  margin: 30px auto;
+  border-radius: 9px;
+  width: 90%;
+}
+
 label{
   cursor: pointer;
   font-family: var(--font);

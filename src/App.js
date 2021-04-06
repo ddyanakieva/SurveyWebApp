@@ -1,7 +1,10 @@
 import React, {Component} from "react";
 import './App.css';
+import axios from 'axios';
 import Survey from './Survey.js';
 import Forms from './Forms.js';
+import firebase from "firebase/app";
+import "firebase/storage";
 
 class App extends Component {
   constructor() {
@@ -23,7 +26,23 @@ class App extends Component {
     }
 
     this.loadNextSection = this.loadNextSection.bind(this);
+
+    var firebaseConfig = {
+     apiKey: 'AIzaSyDIGiTP4SLRlFpVb2VqpOlHeoOs73lDM-w',
+      storageBucket: 'gs://phishing-surveyapp.appspot.com'
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    else {
+      firebase.app(); // if already initialized, use that one
+   }
+  
+    this.storage = firebase.storage();
   }
+
+ 
 
   loadSurvey(type){
     return(
@@ -89,6 +108,26 @@ class App extends Component {
     });
   }
 
+ handleFirebaseStorageUpload = () => {
+   try {
+    let storageRef = this.storage.ref();
+
+    storageRef.child('testDeniDeniDeni.txt').putString("Hjelo")
+      // .then(function(snapshot) {
+      // console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+      // console.log('File metadata:', snapshot.metadata);
+      // Let's get a download URL for the file.
+      // snapshot.ref.getDownloadURL().then(function(url) {
+      //   // console.log('File available at', url);
+      //   document.getElementById('linkbox').innerHTML = '<a href="' +  url + '">Click For File</a>';
+      // });
+    // });    
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
   render() {
     let sectionNumber = this.state.currentSection;
     let section = this.sections[sectionNumber];
@@ -145,7 +184,6 @@ class App extends Component {
             </div>
         </div>  
       </div>
-      <button className="info-button" aria-label="MoreInformation"> <i className="fas fa-question"></i> </button>
       <div className="button-wrapper">
         {
           !section[2] ?
@@ -153,9 +191,14 @@ class App extends Component {
           {section[1]}
         </button>
         :
-        <button type="button" className="submit-button" aria-label="SubmitButton" onClick={this.loadNextSection_}>
-          {section[1]}
-        </button>
+        // <button type="button" className="submit-button" aria-label="SubmitButton" onClick={this.loadNextSection_}>
+        //   {section[1]}
+        // </button>
+        <form>
+          <button type="button" className="submit-button" aria-label="SubmitButton"onClick={this.handleFirebaseStorageUpload}>
+            {section[1]}
+          </button>
+        </form>
         }
       </div>  
       </div>
