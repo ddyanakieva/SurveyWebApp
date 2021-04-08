@@ -309,3 +309,19 @@ hr {
 .sub-section-title {
   color: var(--dark-blue);
 }
+
+#game-round{
+  width: calc(var(--min-weight) + 150px); 
+  border: 1px solid var(--blue);
+  border-radius: 15px;
+  background: white;
+
+  margin-left: -75px;
+  padding-bottom: 40px;
+}
+
+.game-container{
+  margin: 0 auto;
+  width: 1024px;
+  height: 576px;
+}

@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import './App.css';
-import axios from 'axios';
 import Survey from './Survey.js';
 import Forms from './Forms.js';
+import Game from './Game.js';
 import firebase from "firebase/app";
 import "firebase/storage";
 
@@ -11,21 +11,27 @@ class App extends Component {
     super();
 
     this.state = {
-      currentSection: 1,
+      userID: 0,
+      currentSection: 5,
       allQuestionsInSectionAnswered: false,
-      alert: false,
-      pilotRound: false,
-      mainRound: true,
+      alert: false,      
+      consentQData:"",
+      demographicQData:"",
+      feedbackQData:"",
+      mainRoundPartAnswers:"",
     }
     this.sections = {
       1:["participation", "PROCEED", true, ""],
       2:["intoduction","PROCEED", true, ""],
       3:["consent", "START", false, "Please, tick the check box if you would like to proceed"],
       4:["demographics","SUBMIT", false, "Please, answer all questions before submitting."],
-      5:["feedback","SUBMIT", false, "Please, answer all questions before submitting."]
+      5:["game","PROCEED", false, "You must complete the game round before proceeding."],
+      6:["feedback","SUBMIT", false, "Please, answer all questions before submitting."],
+      7:["end","", true, ""]
     }
 
     this.loadNextSection = this.loadNextSection.bind(this);
+    this.scrollToTopOfWindow = this.scrollToTopOfWindow.bind(this);
 
     var firebaseConfig = {
      apiKey: 'AIzaSyDIGiTP4SLRlFpVb2VqpOlHeoOs73lDM-w',
@@ -41,26 +47,54 @@ class App extends Component {
   
     this.storage = firebase.storage();
   }
-
  
+ 
+  receiveData(stateName, data, bool){
+    // try {
+    //   let storageRef = this.storage.ref();
+    //   storageRef.child('unityTestOutput2.txt').putString(data)  
+    // }
+    // catch(error) {
+    //   console.log(error);
+    // }
+
+    this.setState({
+      [stateName]:data,
+      allQuestionsInSectionAnswered:bool
+    });
+  }
 
   loadSurvey(type){
     return(
       <div>
-        <Survey surveyToLoad={type} enableButton={(bool) => {this.setState({allQuestionsInSectionAnswered:bool})}} />      
+        <Survey surveyToLoad={type} sendSurveyData={(stateName, data, bool) => {this.receiveData(stateName, data,bool)}}/>      
       </div>
     );
   }  
 
   loadForm(type){
     return(
-      <Forms type={type} proceed={(bool) => {this.setState({allQuestionsInSectionAnswered:bool})}}/>
+      <Forms type={type} sendFormData={(stateName, data, bool) => {this.receiveData(stateName, data,bool)}}/>
+    )
+  }
+
+  loadGame(){
+    return(
+        <Game sendGameData={(data)=>{this.receiveData("mainRoundPartAnswers", data ,true)}} />
     )
   }
 
   closeAlert = () =>{
     this.setState({
       alert:false,
+    });
+  }
+  
+  scrollToTopOfWindow = () =>{
+    window.scrollTo({
+      top:0, 
+      left: 0,
+      behavior: "smooth"
     });
   }
 
@@ -74,7 +108,8 @@ class App extends Component {
   }
 
   loadNextSection = () =>{
-    if (this.state.currentSection === 5) return;
+    // at current section == 6 should load 'thank you for participating'
+    if (this.state.currentSection === 7) return;
     if (!this.state.allQuestionsInSectionAnswered){
       this.setState({
         alert:true,
@@ -82,11 +117,7 @@ class App extends Component {
       return;
     }
 
-    window.scrollTo({
-      top:0, 
-      left: 0,
-      behavior: "smooth"
-    });
+    this.scrollToTopOfWindow();
 
     this.setState({
       currentSection: this.state.currentSection + 1,
@@ -96,41 +127,33 @@ class App extends Component {
   }
 
   loadNextSection_= () => {
-    window.scrollTo({
-      top:0, 
-      left: 0,
-      behavior: "smooth"
-    });
+    this.scrollToTopOfWindow();
 
     this.setState({
       currentSection: this.state.currentSection + 1,
       allQuestionsInSectionAnswered: false,
     });
-  }
+  }  
 
- handleFirebaseStorageUpload = () => {
-   try {
-    let storageRef = this.storage.ref();
-
-    storageRef.child('testDeniDeniDeni.txt').putString("Hjelo")
-      // .then(function(snapshot) {
-      // console.log('Uploaded', snapshot.totalBytes, 'bytes.');
-      // console.log('File metadata:', snapshot.metadata);
-      // Let's get a download URL for the file.
-      // snapshot.ref.getDownloadURL().then(function(url) {
-      //   // console.log('File available at', url);
-      //   document.getElementById('linkbox').innerHTML = '<a href="' +  url + '">Click For File</a>';
-      // });
-    // });    
+  handleFirebaseStorageUpload = () => {
+    this.scrollToTopOfWindow();
+    try {
+      let storageRef = this.storage.ref();
+      let data = JSON.stringify(this.state.demographicQData) + "\n\n" + JSON.stringify(this.state.feedbackQData) + "\n\n" + String(this.state.mainRoundPartAnswers);
+      storageRef.child('testReactOutput2.txt').putString(data);  
     }
-    catch(error){
+    catch(error) {
       console.log(error);
     }
+
+    this.loadNextSection_();
   }
 
   render() {
     let sectionNumber = this.state.currentSection;
     let section = this.sections[sectionNumber];
+    let formPanelID;
+    sectionNumber === 5 ? formPanelID = "game-round" : formPanelID = "form-panel";
     // pilot round
     // main round
     return(
@@ -143,36 +166,56 @@ class App extends Component {
                 <p style={{fontFamily: "'Press Start 2P', cursive", fontSize: "2rem", color: "white", paddingBottom: "5px"}}>SERIOUS GAMES</p>
                 <p style={{color:"white"}}>for increasing awareness of phishing emails</p>
             </div>
-            <div id="form-panel">
+            <div id={formPanelID} >
                 {
                   sectionNumber === 1 ?
                   <div className="progress-section">                 
                       <p>Participation form</p>
-                      <p>{sectionNumber}/5</p>
+                      <p>{sectionNumber}/6</p>
                   </div>
                   :
                   sectionNumber === 2 ?
                   <div className="progress-section">                 
                       <p>Introduction to the game</p>
-                      <p>{sectionNumber}/5</p>
+                      <p>{sectionNumber}/6</p>
                   </div>
                   :
                   sectionNumber === 3 ?
                   <div className="progress-section">                 
                       <p>Consent form</p>
-                      <p>{sectionNumber}/5</p>
+                      <p>{sectionNumber}/6</p>
                   </div>
                   :
-                  sectionNumber > 3 ?
+                  sectionNumber === 4 ?
                   <div className="progress-section">                 
                       <p>Questionnaire</p>
-                      <p>{sectionNumber}/5</p>
+                      <p>{sectionNumber}/6</p>
                   </div>
                   :
-                  null
+                  sectionNumber === 5 ?
+                  <div className="progress-section">                 
+                      <p>Main Game Round</p>
+                      <p>{sectionNumber}/6</p>
+                  </div>
+                  :
+                  sectionNumber === 6?
+                  <div className="progress-section">                 
+                      <p>Questionnaire</p>
+                      <p>{sectionNumber}/6</p>
+                  </div>
+                  :
+                  <div className="progress-section">                 
+                      <p>End</p>
+                  </div>
                 }
                 {
                   sectionNumber < 4 ?
+                  this.loadForm(section[0])
+                  :
+                  sectionNumber === 5 ?
+                  this.loadGame()
+                  :
+                  sectionNumber === 7?
                   this.loadForm(section[0])
                   :
                   this.loadSurvey(section[0])
@@ -186,19 +229,29 @@ class App extends Component {
       </div>
       <div className="button-wrapper">
         {
+          sectionNumber === 4 ?
+          <form>
+            <button type="button" className="submit-button" aria-label="SubmitButton" onClick={this.handleFirebaseStorageUpload}>
+              {section[1]}
+            </button>
+          </form>
+        :
+          sectionNumber === 7 ?
+          null
+        :
           !section[2] ?
         <button type="button" className={`submit-button ${this.state.allQuestionsInSectionAnswered ? null : "disabled"}`} aria-label="SubmitButton" onClick={this.loadNextSection}>
           {section[1]}
         </button>
         :
-        // <button type="button" className="submit-button" aria-label="SubmitButton" onClick={this.loadNextSection_}>
-        //   {section[1]}
-        // </button>
-        <form>
-          <button type="button" className="submit-button" aria-label="SubmitButton"onClick={this.handleFirebaseStorageUpload}>
-            {section[1]}
-          </button>
-        </form>
+        <button type="button" className="submit-button" aria-label="SubmitButton" onClick={this.loadNextSection_}>
+          {section[1]}
+        </button>
+        // <form>
+        //   <button type="button" className="submit-button" aria-label="SubmitButton"onClick={this.handleFirebaseStorageUpload}>
+        //     {section[1]}
+        //   </button>
+        // </form>
         }
       </div>  
       </div>

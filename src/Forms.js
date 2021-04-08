@@ -71,8 +71,9 @@ class Forms extends Component {
   
   createFormOfType(){
     let form = []
+    let type = this.props.type;
 
-    if (this.props.type === "participation"){
+    if (type === "participation"){
       form.push(
         <div>
             <div className="people-info" style={{marginBottom:"5px"}}>
@@ -106,7 +107,7 @@ class Forms extends Component {
           </div>
         )
       }
-      else if (this.props.type === "intoduction"){
+      else if (type === "intoduction"){
         this.introductionSection.map((element,i) => 
           form.push(
           <div key={"introduct-"+i}>
@@ -116,7 +117,7 @@ class Forms extends Component {
           </div>)
         );
       }
-      else if (this.props.type === "consent"){
+      else if (type === "consent"){
         form.push(
           <div>
             <p className="highlighted">
@@ -127,7 +128,20 @@ class Forms extends Component {
             {this.consent.map((x,i) => 
               this.createSubConsentSection(x.text, i)
             )}
-            <Survey surveyToLoad="consent" enableButton={(bool) => {this.props.proceed(bool)}}/>
+            <Survey surveyToLoad="consent" sendSurveyData={(stateName, data, bool) => {this.props.sendFormData(stateName, data, bool)}}/>
+          </div>
+        )
+      }
+      else if (type === "end"){
+        form.push(
+          <div>
+            <p className="highlighted">
+              Thank you for taking part in the research project. <br/>“{this.projectTitle}”. 
+            </p>
+            <hr/> 
+            <p>
+              You can now close this window.
+            </p>
           </div>
         )
       }

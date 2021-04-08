@@ -203,10 +203,10 @@ class Survey extends Component {
     }
 
     if (allAnswered){
-      this.props.enableButton(true);
+      this.props.sendSurveyData(survey, qdata , true);
     }
     else{ 
-      this.props.enableButton(false);
+      this.props.sendSurveyData(survey,"",false);
     }
 
     this.setState({[survey]: qdata});
