@@ -36,6 +36,11 @@ class Forms extends Component {
 
     this.introductionSection = [
       {
+        dangerText: `You will be asked to perform two core tasks - <span class="highlighted">Classify</span> the emails displayed on screen and <span class="highlighted">Select</span> all phishing cues where applicable. A cue is an indication of phishing and can represent a word, a phrase, an email, a URL link or an attachment. Please keep in mind that you cannot open or download any URL links or attachments part of the emails. The screenshots below are taken from the game to help you navigate the user inteface.`,
+        image: "",
+        divider: 0,
+      },
+      {
         dangerText: `In the first highlighted section of the screenshot below you can see at the top your <span class="highlighted">Score Points</span> and right below it the <span class="highlighted">Time Remaining</span>. In the second highlighted section of the screenshot below you can see the attachments as well as the two buttons. Use the buttons to classify each email, progress to the next email, reset the timer and earn points. Use the <span class="highlighted">Report button</span> when an email appears <b>phishing</b> and use the <span class="highlighted">Accept button</span> when an email appear <b>genuine</b>.`,
         image: "screenshot2.png",
         divider: 1,
@@ -43,6 +48,11 @@ class Forms extends Component {
       {
         dangerText: "The screenshot below shows information on how cues are displayed. You can recognize which text objects are selectable by placing your mouse over them. Hovering over cues gives the text an <b>orange</b> background and selecting a cue turns the background <b>blue</b> as shown in the screenshot. If there is a link URL present in the email you can see the real address pop up above it.",
         image: "screenshot1.png",
+        divider: 1
+      },
+      {
+        dangerText: "The screenshot below shows the Guidebook which offers guidance towards classifying the emails. You can use the scrollbar to navigate further down.",
+        image: "guidebook.png",
         divider: 1
       }
     ]
@@ -101,7 +111,7 @@ class Forms extends Component {
               Denitsa Yanakieva, at <a href='mailto:u01ddy17@abdn.ac.uk?subject=Phishing research query'>u01ddy17@abdn.ac.uk</a>
               <br/>For any queries regarding ethical concerns you may contact the Convener of the Physical Sciences &amp; Engineering Ethics Board at the University of Aberdeen: <a href='mailto:copsethics@abdn.ac.uk?'>copsethics@abdn.ac.uk</a>
               
-              <br></br>This research project was approved by the Physical Sciences &amp; Engineering Ethics Board on [to-be-announced]
+              <br></br>This research project was approved by the Physical Sciences &amp; Engineering Ethics Board on 10/03/2021.
               </p>
             </div>
           </div>

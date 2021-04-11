@@ -12,7 +12,7 @@ class App extends Component {
 
     this.state = {
       userID: 0,
-      currentSection: 5,
+      currentSection: 1,
       allQuestionsInSectionAnswered: false,
       alert: false,      
       consentQData:"",
@@ -20,6 +20,9 @@ class App extends Component {
       feedbackQData:"",
       mainRoundPartAnswers:"",
     }
+
+    this.id = "";
+
     this.sections = {
       1:["participation", "PROCEED", true, ""],
       2:["intoduction","PROCEED", true, ""],
@@ -48,16 +51,11 @@ class App extends Component {
     this.storage = firebase.storage();
   }
  
- 
-  receiveData(stateName, data, bool){
-    // try {
-    //   let storageRef = this.storage.ref();
-    //   storageRef.child('unityTestOutput2.txt').putString(data)  
-    // }
-    // catch(error) {
-    //   console.log(error);
-    // }
+  componentDidMount(){
+    this.id = Math.round(1 + Math.random() * (1000000 - 1));
+  }
 
+  receiveData(stateName, data, bool){  
     this.setState({
       [stateName]:data,
       allQuestionsInSectionAnswered:bool
@@ -140,7 +138,7 @@ class App extends Component {
     try {
       let storageRef = this.storage.ref();
       let data = JSON.stringify(this.state.demographicQData) + "\n\n" + JSON.stringify(this.state.feedbackQData) + "\n\n" + String(this.state.mainRoundPartAnswers);
-      storageRef.child('testReactOutput2.txt').putString(data);  
+      storageRef.child(`surveyResults-${String(this.id)}.txt`).putString(data);  
     }
     catch(error) {
       console.log(error);
@@ -193,9 +191,9 @@ class App extends Component {
                   </div>
                   :
                   sectionNumber === 5 ?
-                  <div className="progress-section">                 
+                  <div className="progress-section">
                       <p>Main Game Round</p>
-                      <p>{sectionNumber}/6</p>
+                      <p>{sectionNumber}/6</p>              
                   </div>
                   :
                   sectionNumber === 6?
@@ -229,7 +227,7 @@ class App extends Component {
       </div>
       <div className="button-wrapper">
         {
-          sectionNumber === 4 ?
+          sectionNumber === 6 ?
           <form>
             <button type="button" className="submit-button" aria-label="SubmitButton" onClick={this.handleFirebaseStorageUpload}>
               {section[1]}

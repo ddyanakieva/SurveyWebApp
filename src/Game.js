@@ -21,9 +21,9 @@ class Game extends Component{
             console.log(message);
         });
         this.unityContext.on("SaveGameData", (stringEmailData, stringCueData) => {
-            this.setState({
-              isGameOver: true,
-            }, () => {this.props.sendGameData(stringEmailData + "\n" + stringCueData)});
+            let data = stringEmailData + "\n" + stringCueData;
+            console.log(data);
+            this.props.sendGameData(data);
           });  
     }
 

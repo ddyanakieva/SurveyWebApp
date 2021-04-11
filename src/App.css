@@ -116,7 +116,7 @@ hr {
 }
 
 #container{
-  width: var(--min-weight);
+  width: 90vw;
   min-height: 800px;
   margin: 0 auto;
   position: relative;
@@ -142,12 +142,11 @@ hr {
 /* FORM PANEL & OTHER */
 #form-panel{
   width: var(--min-weight);
-
   border: 1px solid var(--blue);
   border-radius: 15px;
   background: white;
-
   padding-bottom: 40px;
+  margin: 0 auto;
 }
 
 .progress-section{
@@ -316,7 +315,7 @@ hr {
   border-radius: 15px;
   background: white;
 
-  margin-left: -75px;
+  margin: 0 auto;
   padding-bottom: 40px;
 }
 
